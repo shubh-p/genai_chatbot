@@ -1,0 +1,186 @@
+[
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "google.generativeai",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "google.generativeai",
+        "description": "google.generativeai",
+        "detail": "google.generativeai",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "OpenAI",
+        "importPath": "openai",
+        "description": "openai",
+        "isExtraImport": true,
+        "detail": "openai",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "streamlit",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "streamlit",
+        "description": "streamlit",
+        "detail": "streamlit",
+        "documentation": {}
+    },
+    {
+        "label": "generate_response",
+        "importPath": "core.chatbot_core_gemini",
+        "description": "core.chatbot_core_gemini",
+        "isExtraImport": true,
+        "detail": "core.chatbot_core_gemini",
+        "documentation": {}
+    },
+    {
+        "label": "generate_response",
+        "kind": 2,
+        "importPath": "core.chatbot_core_gemini",
+        "description": "core.chatbot_core_gemini",
+        "peekOfCode": "def generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)\n    return response.text\n# Example usage\nprint(generate_response(\"I have 2 dogs in my house.\"))",
+        "detail": "core.chatbot_core_gemini",
+        "documentation": {}
+    },
+    {
+        "label": "genai_api_key",
+        "kind": 5,
+        "importPath": "core.chatbot_core_gemini",
+        "description": "core.chatbot_core_gemini",
+        "peekOfCode": "genai_api_key = os.getenv('GEMINI_API_KEY')\nif genai_api_key:\n    genai.configure(api_key=genai_api_key)\nelse:\n    raise ValueError(\"GEMINI_API_KEY is not set in the environment variables.\")\n# Create a Generative Model instance\nmodel = genai.GenerativeModel(\"gemini-1.5-flash\")\nchat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},",
+        "detail": "core.chatbot_core_gemini",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "core.chatbot_core_gemini",
+        "description": "core.chatbot_core_gemini",
+        "peekOfCode": "model = genai.GenerativeModel(\"gemini-1.5-flash\")\nchat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},\n        {\"role\": \"model\", \"parts\": \"Great to meet you. What would you like to know?\"}\n    ]\n)\ndef generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)",
+        "detail": "core.chatbot_core_gemini",
+        "documentation": {}
+    },
+    {
+        "label": "chat",
+        "kind": 5,
+        "importPath": "core.chatbot_core_gemini",
+        "description": "core.chatbot_core_gemini",
+        "peekOfCode": "chat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},\n        {\"role\": \"model\", \"parts\": \"Great to meet you. What would you like to know?\"}\n    ]\n)\ndef generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)\n    return response.text",
+        "detail": "core.chatbot_core_gemini",
+        "documentation": {}
+    },
+    {
+        "label": "generate_response",
+        "kind": 2,
+        "importPath": "core.chatbot_core_openai",
+        "description": "core.chatbot_core_openai",
+        "peekOfCode": "def generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}\n        ],\n        max_tokens=500  # Adjust as needed\n    )",
+        "detail": "core.chatbot_core_openai",
+        "documentation": {}
+    },
+    {
+        "label": "genai_api_key",
+        "kind": 5,
+        "importPath": "core.chatbot_core_openai",
+        "description": "core.chatbot_core_openai",
+        "peekOfCode": "genai_api_key = os.getenv('OPENAI_API_KEY')\n# Initialize OpenAI client\nclient = OpenAI(api_key=genai_api_key)\ndef generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}",
+        "detail": "core.chatbot_core_openai",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "core.chatbot_core_openai",
+        "description": "core.chatbot_core_openai",
+        "peekOfCode": "client = OpenAI(api_key=genai_api_key)\ndef generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}\n        ],\n        max_tokens=500  # Adjust as needed",
+        "detail": "core.chatbot_core_openai",
+        "documentation": {}
+    },
+    {
+        "label": "relevant_context",
+        "kind": 5,
+        "importPath": "core.chatbot_core_openai",
+        "description": "core.chatbot_core_openai",
+        "peekOfCode": "relevant_context = \"Information about GitLab's remote work policy.\"\nprint(generate_response(\"What is GitLab's remote work policy?\", relevant_context))",
+        "detail": "core.chatbot_core_openai",
+        "documentation": {}
+    },
+    {
+        "label": "fetch_gitlab_data",
+        "kind": 2,
+        "importPath": "core.data_retrieval",
+        "description": "core.data_retrieval",
+        "peekOfCode": "def fetch_gitlab_data(url):\n    response = requests.get(url)\n    if response.status_code == 200:\n        soup = BeautifulSoup(response.text, 'html.parser')\n        # Extract relevant content based on specific tags or classes\n        content = soup.find_all('p')  # Adjust selectors as needed\n        return [p.get_text() for p in content]\n    else:\n        print(\"Failed to retrieve data\")\n        return []",
+        "detail": "core.data_retrieval",
+        "documentation": {}
+    },
+    {
+        "label": "handbook_data",
+        "kind": 5,
+        "importPath": "core.data_retrieval",
+        "description": "core.data_retrieval",
+        "peekOfCode": "handbook_data = fetch_gitlab_data('https://about.gitlab.com/company/')\ndirection_data =fetch_gitlab_data('https://about.gitlab.com/direction/')\n# Save the processed data to a JSON file\nwith open('data/gitlab_handbook.json', 'w') as f:\n    json.dump(handbook_data, f)\nwith open('data/gitlab_direction.json', 'w') as f:\n    json.dump(direction_data, f)\nprint(\"Data saved to data/gitlab_handbook.json\")\nprint(\"Data saved to data/gitlab_direction.json\")",
+        "detail": "core.data_retrieval",
+        "documentation": {}
+    },
+    {
+        "label": "user_query",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "user_query = st.text_input(\"Ask a question about GitLab:\")\nif st.button(\"Submit\"):\n    if user_query:\n        # Generate response and store the interaction in session state\n        response = generate_response(user_query)\n        st.session_state.history.append({\"user\": user_query, \"response\": response})\n        # Display chat history\n        for interaction in st.session_state.history:\n            st.write(f\"**You:** {interaction['user']}\")\n            st.write(f\"**Bot:** {interaction['response']}\")",
+        "detail": "app",
+        "documentation": {}
+    }
+]
