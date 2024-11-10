@@ -8,14 +8,6 @@
         "documentation": {}
     },
     {
-        "label": "load_dotenv",
-        "importPath": "dotenv",
-        "description": "dotenv",
-        "isExtraImport": true,
-        "detail": "dotenv",
-        "documentation": {}
-    },
-    {
         "label": "google.generativeai",
         "kind": 6,
         "isExtraImport": true,
@@ -34,11 +26,27 @@
         "documentation": {}
     },
     {
-        "label": "OpenAI",
-        "importPath": "openai",
-        "description": "openai",
+        "label": "retrieve_context",
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
         "isExtraImport": true,
-        "detail": "openai",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "core.logging_config",
+        "description": "core.logging_config",
+        "isExtraImport": true,
+        "detail": "core.logging_config",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "core.logging_config",
+        "description": "core.logging_config",
+        "isExtraImport": true,
+        "detail": "core.logging_config",
         "documentation": {}
     },
     {
@@ -68,6 +76,55 @@
         "documentation": {}
     },
     {
+        "label": "SentenceTransformer",
+        "importPath": "sentence_transformers",
+        "description": "sentence_transformers",
+        "isExtraImport": true,
+        "detail": "sentence_transformers",
+        "documentation": {}
+    },
+    {
+        "label": "SentenceTransformer",
+        "importPath": "sentence_transformers",
+        "description": "sentence_transformers",
+        "isExtraImport": true,
+        "detail": "sentence_transformers",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "FAISS",
+        "importPath": "langchain.vectorstores",
+        "description": "langchain.vectorstores",
+        "isExtraImport": true,
+        "detail": "langchain.vectorstores",
+        "documentation": {}
+    },
+    {
+        "label": "HuggingFaceEmbeddings",
+        "importPath": "langchain.embeddings",
+        "description": "langchain.embeddings",
+        "isExtraImport": true,
+        "detail": "langchain.embeddings",
+        "documentation": {}
+    },
+    {
+        "label": "Document",
+        "importPath": "langchain.docstore.document",
+        "description": "langchain.docstore.document",
+        "isExtraImport": true,
+        "detail": "langchain.docstore.document",
+        "documentation": {}
+    },
+    {
         "label": "streamlit",
         "kind": 6,
         "isExtraImport": true,
@@ -89,7 +146,7 @@
         "kind": 2,
         "importPath": "core.chatbot_core_gemini",
         "description": "core.chatbot_core_gemini",
-        "peekOfCode": "def generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)\n    return response.text\n# Example usage\nprint(generate_response(\"I have 2 dogs in my house.\"))",
+        "peekOfCode": "def generate_response(query):\n    # Retrieve relevant context for the query\n    context = retrieve_context(query)\n    # Log the query and context for debugging\n    logger.info(f\"Query: {query}\")\n    logger.info(f\"Retrieved Context: {context}\")\n    # Format the prompt to limit the response to the context\n    formatted_prompt = (\n        f\"Use only the information provided in the following context to answer the query.\\n\\n\"\n        f\"Context:\\n{context}\\n\\n\"",
         "detail": "core.chatbot_core_gemini",
         "documentation": {}
     },
@@ -98,7 +155,7 @@
         "kind": 5,
         "importPath": "core.chatbot_core_gemini",
         "description": "core.chatbot_core_gemini",
-        "peekOfCode": "genai_api_key = os.getenv('GEMINI_API_KEY')\nif genai_api_key:\n    genai.configure(api_key=genai_api_key)\nelse:\n    raise ValueError(\"GEMINI_API_KEY is not set in the environment variables.\")\n# Create a Generative Model instance\nmodel = genai.GenerativeModel(\"gemini-1.5-flash\")\nchat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},",
+        "peekOfCode": "genai_api_key = os.getenv('GEMINI_API_KEY')\ngenai.configure(api_key=genai_api_key)\nmodel = genai.GenerativeModel(\"gemini-1.5-flash\")\ndef generate_response(query):\n    # Retrieve relevant context for the query\n    context = retrieve_context(query)\n    # Log the query and context for debugging\n    logger.info(f\"Query: {query}\")\n    logger.info(f\"Retrieved Context: {context}\")\n    # Format the prompt to limit the response to the context",
         "detail": "core.chatbot_core_gemini",
         "documentation": {}
     },
@@ -107,53 +164,8 @@
         "kind": 5,
         "importPath": "core.chatbot_core_gemini",
         "description": "core.chatbot_core_gemini",
-        "peekOfCode": "model = genai.GenerativeModel(\"gemini-1.5-flash\")\nchat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},\n        {\"role\": \"model\", \"parts\": \"Great to meet you. What would you like to know?\"}\n    ]\n)\ndef generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)",
+        "peekOfCode": "model = genai.GenerativeModel(\"gemini-1.5-flash\")\ndef generate_response(query):\n    # Retrieve relevant context for the query\n    context = retrieve_context(query)\n    # Log the query and context for debugging\n    logger.info(f\"Query: {query}\")\n    logger.info(f\"Retrieved Context: {context}\")\n    # Format the prompt to limit the response to the context\n    formatted_prompt = (\n        f\"Use only the information provided in the following context to answer the query.\\n\\n\"",
         "detail": "core.chatbot_core_gemini",
-        "documentation": {}
-    },
-    {
-        "label": "chat",
-        "kind": 5,
-        "importPath": "core.chatbot_core_gemini",
-        "description": "core.chatbot_core_gemini",
-        "peekOfCode": "chat = model.start_chat(\n    history=[\n        {\"role\": \"user\", \"parts\": \"Hello\"},\n        {\"role\": \"model\", \"parts\": \"Great to meet you. What would you like to know?\"}\n    ]\n)\ndef generate_response(query, context=None):\n    # Send the user's query and get the response\n    response = chat.send_message(query)\n    return response.text",
-        "detail": "core.chatbot_core_gemini",
-        "documentation": {}
-    },
-    {
-        "label": "generate_response",
-        "kind": 2,
-        "importPath": "core.chatbot_core_openai",
-        "description": "core.chatbot_core_openai",
-        "peekOfCode": "def generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}\n        ],\n        max_tokens=500  # Adjust as needed\n    )",
-        "detail": "core.chatbot_core_openai",
-        "documentation": {}
-    },
-    {
-        "label": "genai_api_key",
-        "kind": 5,
-        "importPath": "core.chatbot_core_openai",
-        "description": "core.chatbot_core_openai",
-        "peekOfCode": "genai_api_key = os.getenv('OPENAI_API_KEY')\n# Initialize OpenAI client\nclient = OpenAI(api_key=genai_api_key)\ndef generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}",
-        "detail": "core.chatbot_core_openai",
-        "documentation": {}
-    },
-    {
-        "label": "client",
-        "kind": 5,
-        "importPath": "core.chatbot_core_openai",
-        "description": "core.chatbot_core_openai",
-        "peekOfCode": "client = OpenAI(api_key=genai_api_key)\ndef generate_response(query, context=None):\n    # Create a chat completion using the client\n    completion = client.chat.completions.create(\n        model=\"babbage-002\",  # Change model if needed\n        messages=[\n            {\"role\": \"system\", \"content\": \"You are an assistant knowledgeable about GitLab.\"},\n            {\"role\": \"user\", \"content\": query}\n        ],\n        max_tokens=500  # Adjust as needed",
-        "detail": "core.chatbot_core_openai",
-        "documentation": {}
-    },
-    {
-        "label": "relevant_context",
-        "kind": 5,
-        "importPath": "core.chatbot_core_openai",
-        "description": "core.chatbot_core_openai",
-        "peekOfCode": "relevant_context = \"Information about GitLab's remote work policy.\"\nprint(generate_response(\"What is GitLab's remote work policy?\", relevant_context))",
-        "detail": "core.chatbot_core_openai",
         "documentation": {}
     },
     {
@@ -161,7 +173,7 @@
         "kind": 2,
         "importPath": "core.data_retrieval",
         "description": "core.data_retrieval",
-        "peekOfCode": "def fetch_gitlab_data(url):\n    response = requests.get(url)\n    if response.status_code == 200:\n        soup = BeautifulSoup(response.text, 'html.parser')\n        # Extract relevant content based on specific tags or classes\n        content = soup.find_all('p')  # Adjust selectors as needed\n        return [p.get_text() for p in content]\n    else:\n        print(\"Failed to retrieve data\")\n        return []",
+        "peekOfCode": "def fetch_gitlab_data(url):\n    response = requests.get(url)\n    if response.status_code == 200:\n        soup = BeautifulSoup(response.text, 'html.parser')\n        sections = []\n        # Identify headers to create meaningful chunks\n        for header in soup.find_all(['h2', 'h3']):  # Adjust based on HTML structure\n            content = []\n            for sibling in header.find_next_siblings():\n                if sibling.name in ['h2', 'h3']:",
         "detail": "core.data_retrieval",
         "documentation": {}
     },
@@ -170,8 +182,89 @@
         "kind": 5,
         "importPath": "core.data_retrieval",
         "description": "core.data_retrieval",
-        "peekOfCode": "handbook_data = fetch_gitlab_data('https://about.gitlab.com/company/')\ndirection_data =fetch_gitlab_data('https://about.gitlab.com/direction/')\n# Save the processed data to a JSON file\nwith open('data/gitlab_handbook.json', 'w') as f:\n    json.dump(handbook_data, f)\nwith open('data/gitlab_direction.json', 'w') as f:\n    json.dump(direction_data, f)\nprint(\"Data saved to data/gitlab_handbook.json\")\nprint(\"Data saved to data/gitlab_direction.json\")",
+        "peekOfCode": "handbook_data = fetch_gitlab_data('https://about.gitlab.com/company/')\ndirection_data =fetch_gitlab_data('https://about.gitlab.com/direction/')\n# Save the processed data to a JSON file\nwith open('data/gitlab_handbook.json', 'w') as f:\n    json.dump(handbook_data, f, indent=2)\nwith open('data/gitlab_direction.json', 'w') as f:\n    json.dump(direction_data, f, indent=2)\nprint(\"Data saved to data/gitlab_handbook.json\")\nprint(\"Data saved to data/gitlab_direction.json\")",
         "detail": "core.data_retrieval",
+        "documentation": {}
+    },
+    {
+        "label": "get_embeddings",
+        "kind": 2,
+        "importPath": "core.embedder",
+        "description": "core.embedder",
+        "peekOfCode": "def get_embeddings(texts):\n    return embedding_model.encode(texts, convert_to_tensor=True)",
+        "detail": "core.embedder",
+        "documentation": {}
+    },
+    {
+        "label": "embedding_model",
+        "kind": 5,
+        "importPath": "core.embedder",
+        "description": "core.embedder",
+        "peekOfCode": "embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\n# Function to get embeddings for text sections\ndef get_embeddings(texts):\n    return embedding_model.encode(texts, convert_to_tensor=True)",
+        "detail": "core.embedder",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "core.logging_config",
+        "description": "core.logging_config",
+        "peekOfCode": "logger = logging.getLogger(\"chatbot_logger\")",
+        "detail": "core.logging_config",
+        "documentation": {}
+    },
+    {
+        "label": "load_data",
+        "kind": 2,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "def load_data():\n    with open('data/gitlab_handbook.json', 'r') as f:\n        handbook_data = json.load(f)\n    with open('data/gitlab_direction.json', 'r') as f:\n        direction_data = json.load(f)\n    #TODO:check why both of them dont work together and fix( already queried in gpt)\n    return handbook_data + direction_data \nembedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "build_vector_store",
+        "kind": 2,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "def build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()\ndef retrieve_context(query):\n    retriever = vector_store.as_retriever()",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "retrieve_context",
+        "kind": 2,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "def retrieve_context(query):\n    retriever = vector_store.as_retriever()\n    results = retriever.get_relevant_documents(query)\n    # Log the retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query '{query}': {[doc.page_content for doc in results[:3]]}\")\n    # Return joined content of top matches\n    return \" \".join([doc.page_content for doc in results[:3]])",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "embedding_model",
+        "kind": 5,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "hf_embeddings",
+        "kind": 5,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "hf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()\ndef retrieve_context(query):",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "vector_store",
+        "kind": 5,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "vector_store = build_vector_store()\ndef retrieve_context(query):\n    retriever = vector_store.as_retriever()\n    results = retriever.get_relevant_documents(query)\n    # Log the retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query '{query}': {[doc.page_content for doc in results[:3]]}\")\n    # Return joined content of top matches\n    return \" \".join([doc.page_content for doc in results[:3]])",
+        "detail": "core.retrieval_langchain",
         "documentation": {}
     },
     {
@@ -179,7 +272,7 @@
         "kind": 5,
         "importPath": "app",
         "description": "app",
-        "peekOfCode": "user_query = st.text_input(\"Ask a question about GitLab:\")\nif st.button(\"Submit\"):\n    if user_query:\n        # Generate response and store the interaction in session state\n        response = generate_response(user_query)\n        st.session_state.history.append({\"user\": user_query, \"response\": response})\n        # Display chat history\n        for interaction in st.session_state.history:\n            st.write(f\"**You:** {interaction['user']}\")\n            st.write(f\"**Bot:** {interaction['response']}\")",
+        "peekOfCode": "user_query = st.text_input(\"Ask a question about GitLab:\")\nif st.button(\"Submit\"):\n    if user_query:\n        # Generate response with retrieved context\n        response = generate_response(user_query)\n        st.session_state.history.append({\"user\": user_query, \"response\": response})\n        # Display chat history\n        for interaction in st.session_state.history:\n            st.write(f\"**You:** {interaction['user']}\")\n            st.write(f\"**Bot:** {interaction['response']}\")",
         "detail": "app",
         "documentation": {}
     }

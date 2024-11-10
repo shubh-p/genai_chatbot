@@ -1,29 +1,40 @@
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
+from core.retrieval_langchain import retrieve_context
+from core.logging_config import logger
 
-# Configure the API key for Gemini from the environment variable
+# Load the API key
 load_dotenv()
 genai_api_key = os.getenv('GEMINI_API_KEY')
-if genai_api_key:
-    genai.configure(api_key=genai_api_key)
-else:
-    raise ValueError("GEMINI_API_KEY is not set in the environment variables.")
-
-# Create a Generative Model instance
+genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-chat = model.start_chat(
-    history=[
-        {"role": "user", "parts": "Hello"},
-        {"role": "model", "parts": "Great to meet you. What would you like to know?"}
-    ]
-)
+def generate_response(query):
+    # Retrieve relevant context for the query
+    context = retrieve_context(query)
+    
+    # Log the query and context for debugging
+    logger.info(f"Query: {query}")
+    logger.info(f"Retrieved Context: {context}")
 
-def generate_response(query, context=None):
-    # Send the user's query and get the response
+    # Format the prompt to limit the response to the context
+    formatted_prompt = (
+        f"Use only the information provided in the following context to answer the query.\n\n"
+        f"Context:\n{context}\n\n"
+        f"Query: {query}\n\n"
+        "Answer based strictly on the context above without referencing external information:"
+    )
+    
+    # Generate response using the Gemini API
+    chat = model.start_chat(
+        history=[
+            {"role": "user", "parts": formatted_prompt}
+        ]
+    )
     response = chat.send_message(query)
-    return response.text
 
-# Example usage
-print(generate_response("I have 2 dogs in my house."))
+    # Log the response for debugging
+    logger.info(f"Generated Response: {response.text}")
+
+    return response.text

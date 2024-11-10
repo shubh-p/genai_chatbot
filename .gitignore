@@ -1,4 +1,7 @@
 # Ignore virtual environment and environment files
 venv/
 .env
-genai-chatbot-env/  
+genai-chatbot-env/
+chatbot.log
+data/gitlab_handbook.json
+data.gitlab_direction.json

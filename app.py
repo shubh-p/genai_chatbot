@@ -1,17 +1,17 @@
+# app.py
 import streamlit as st
 from core.chatbot_core_gemini import generate_response
 
-# Streamlit app
+# Streamlit app setup
 st.title("GitLab Handbook Chatbot")
 
-# Initialize `history` in `st.session_state` if it doesn't exist
 if 'history' not in st.session_state:
     st.session_state.history = []
 
 user_query = st.text_input("Ask a question about GitLab:")
 if st.button("Submit"):
     if user_query:
-        # Generate response and store the interaction in session state
+        # Generate response with retrieved context
         response = generate_response(user_query)
         st.session_state.history.append({"user": user_query, "response": response})
         
