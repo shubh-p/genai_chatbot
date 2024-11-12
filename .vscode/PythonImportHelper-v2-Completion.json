@@ -125,6 +125,49 @@
         "documentation": {}
     },
     {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "pformat",
+        "importPath": "pprint",
+        "description": "pprint",
+        "isExtraImport": true,
+        "detail": "pprint",
+        "documentation": {}
+    },
+    {
+        "label": "jmespath",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "jmespath",
+        "description": "jmespath",
+        "detail": "jmespath",
+        "documentation": {}
+    },
+    {
+        "label": "exceptions",
+        "importPath": "jmespath",
+        "description": "jmespath",
+        "isExtraImport": true,
+        "detail": "jmespath",
+        "documentation": {}
+    },
+    {
         "label": "streamlit",
         "kind": 6,
         "isExtraImport": true,
@@ -214,11 +257,20 @@
         "documentation": {}
     },
     {
-        "label": "load_data",
+        "label": "load_data_handbook",
         "kind": 2,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "def load_data():\n    with open('data/gitlab_handbook.json', 'r') as f:\n        handbook_data = json.load(f)\n    with open('data/gitlab_direction.json', 'r') as f:\n        direction_data = json.load(f)\n    #TODO:check why both of them dont work together and fix( already queried in gpt)\n    return handbook_data + direction_data \nembedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():",
+        "peekOfCode": "def load_data_handbook():\n    with open('data/gitlab_handbook.json', 'r') as f:\n        handbook_data = json.load(f)\n    return handbook_data\ndef load_data_direction():\n    with open('data/gitlab_direction.json', 'r') as f:\n        direction_data = json.load(f)\n    return direction_data\nembedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "load_data_direction",
+        "kind": 2,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "def load_data_direction():\n    with open('data/gitlab_direction.json', 'r') as f:\n        direction_data = json.load(f)\n    return direction_data\nembedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store(data, name):\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed in {name}: {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)",
         "detail": "core.retrieval_langchain",
         "documentation": {}
     },
@@ -227,7 +279,7 @@
         "kind": 2,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "def build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()\ndef retrieve_context(query):\n    retriever = vector_store.as_retriever()",
+        "peekOfCode": "def build_vector_store(data, name):\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed in {name}: {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\n# Build vector stores separately\nvector_store_handbook = build_vector_store(load_data_handbook(), \"handbook\")\nvector_store_direction = build_vector_store(load_data_direction(), \"direction\")\ndef retrieve_context(query):\n    # Retrieve top 3 relevant documents from each vector store",
         "detail": "core.retrieval_langchain",
         "documentation": {}
     },
@@ -236,7 +288,7 @@
         "kind": 2,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "def retrieve_context(query):\n    retriever = vector_store.as_retriever()\n    results = retriever.get_relevant_documents(query)\n    # Log the retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query '{query}': {[doc.page_content for doc in results[:3]]}\")\n    # Return joined content of top matches\n    return \" \".join([doc.page_content for doc in results[:3]])",
+        "peekOfCode": "def retrieve_context(query):\n    # Retrieve top 3 relevant documents from each vector store\n    retriever1 = vector_store_handbook.as_retriever()\n    results1 = retriever1.get_relevant_documents(query)[:3]\n    retriever2 = vector_store_direction.as_retriever()\n    results2 = retriever2.get_relevant_documents(query)[:3]\n    # Log retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query from handbook '{query}': {[doc.page_content for doc in results1]}\")\n    logger.info(f\"Retrieved Documents for Query from direction '{query}': {[doc.page_content for doc in results2]}\")\n    # Combine the content of the retrieved documents",
         "detail": "core.retrieval_langchain",
         "documentation": {}
     },
@@ -245,7 +297,7 @@
         "kind": 5,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()",
+        "peekOfCode": "embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')\nhf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store(data, name):\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed in {name}: {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\n# Build vector stores separately\nvector_store_handbook = build_vector_store(load_data_handbook(), \"handbook\")\nvector_store_direction = build_vector_store(load_data_direction(), \"direction\")",
         "detail": "core.retrieval_langchain",
         "documentation": {}
     },
@@ -254,17 +306,35 @@
         "kind": 5,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "hf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store():\n    data = load_data()\n    # Combine header and content to form smaller, meaningful documents\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed are : {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\nvector_store = build_vector_store()\ndef retrieve_context(query):",
+        "peekOfCode": "hf_embeddings = HuggingFaceEmbeddings(model_name=\"sentence-transformers/all-MiniLM-L6-v2\")\ndef build_vector_store(data, name):\n    documents = [Document(page_content=f\"{item['header']} - {item['content']}\") for item in data]\n    logger.info(f\"Total documents indexed in {name}: {len(documents)}\")\n    vector_store = FAISS.from_documents(documents, hf_embeddings)\n    return vector_store\n# Build vector stores separately\nvector_store_handbook = build_vector_store(load_data_handbook(), \"handbook\")\nvector_store_direction = build_vector_store(load_data_direction(), \"direction\")\ndef retrieve_context(query):",
         "detail": "core.retrieval_langchain",
         "documentation": {}
     },
     {
-        "label": "vector_store",
+        "label": "vector_store_handbook",
         "kind": 5,
         "importPath": "core.retrieval_langchain",
         "description": "core.retrieval_langchain",
-        "peekOfCode": "vector_store = build_vector_store()\ndef retrieve_context(query):\n    retriever = vector_store.as_retriever()\n    results = retriever.get_relevant_documents(query)\n    # Log the retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query '{query}': {[doc.page_content for doc in results[:3]]}\")\n    # Return joined content of top matches\n    return \" \".join([doc.page_content for doc in results[:3]])",
+        "peekOfCode": "vector_store_handbook = build_vector_store(load_data_handbook(), \"handbook\")\nvector_store_direction = build_vector_store(load_data_direction(), \"direction\")\ndef retrieve_context(query):\n    # Retrieve top 3 relevant documents from each vector store\n    retriever1 = vector_store_handbook.as_retriever()\n    results1 = retriever1.get_relevant_documents(query)[:3]\n    retriever2 = vector_store_direction.as_retriever()\n    results2 = retriever2.get_relevant_documents(query)[:3]\n    # Log retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query from handbook '{query}': {[doc.page_content for doc in results1]}\")",
         "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "vector_store_direction",
+        "kind": 5,
+        "importPath": "core.retrieval_langchain",
+        "description": "core.retrieval_langchain",
+        "peekOfCode": "vector_store_direction = build_vector_store(load_data_direction(), \"direction\")\ndef retrieve_context(query):\n    # Retrieve top 3 relevant documents from each vector store\n    retriever1 = vector_store_handbook.as_retriever()\n    results1 = retriever1.get_relevant_documents(query)[:3]\n    retriever2 = vector_store_direction.as_retriever()\n    results2 = retriever2.get_relevant_documents(query)[:3]\n    # Log retrieved documents for debugging\n    logger.info(f\"Retrieved Documents for Query from handbook '{query}': {[doc.page_content for doc in results1]}\")\n    logger.info(f\"Retrieved Documents for Query from direction '{query}': {[doc.page_content for doc in results2]}\")",
+        "detail": "core.retrieval_langchain",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "genai-chatbot-env.bin.jp",
+        "description": "genai-chatbot-env.bin.jp",
+        "peekOfCode": "def main():\n    parser = argparse.ArgumentParser()\n    parser.add_argument('expression')\n    parser.add_argument('-f', '--filename',\n                        help=('The filename containing the input data.  '\n                              'If a filename is not given then data is '\n                              'read from stdin.'))\n    parser.add_argument('--ast', action='store_true',\n                        help=('Pretty print the AST, do not search the data.'))\n    args = parser.parse_args()",
+        "detail": "genai-chatbot-env.bin.jp",
         "documentation": {}
     },
     {
