@@ -4,6 +4,7 @@ import os
 from core.retrieval_langchain import retrieve_context
 from core.logging_config import logger
 
+TAG='chatbot_core_gemini.py'
 # Load the API key
 load_dotenv()
 genai_api_key = os.getenv('GEMINI_API_KEY')
@@ -15,8 +16,8 @@ def generate_response(query):
     context = retrieve_context(query)
     
     # Log the query and context for debugging
-    logger.info(f"Query: {query}")
-    logger.info(f"Retrieved Context: {context}")
+    logger.info(f"{TAG}:Query: {query}")
+    print(f"{TAG}:Retrieved Context: {context}")
 
     # Format the prompt to limit the response to the context
     formatted_prompt = (
@@ -35,6 +36,7 @@ def generate_response(query):
     response = chat.send_message(query)
 
     # Log the response for debugging
-    logger.info(f"Generated Response: {response.text}")
+    logger.info('------------------------------')
+    logger.info(f"{TAG}:Generated Response: {response.text}")
 
     return response.text
