@@ -60,7 +60,7 @@ def build_or_load_vector_store(data, name, file_path):
         return FAISS.load_local(file_path, hf_embeddings, allow_dangerous_deserialization=True)
     else:
         logger.info(f"{TAG}: Building new vector store for {name}")
-        limited_data = data
+        limited_data = data[:100]
         documents = [Document(page_content=f"{item['header']} - {item['content']}") for item in limited_data]
         logger.info(f"{TAG}: Total documents to be indexed in {name}: {len(documents)}")
         vector_store = FAISS.from_documents(documents, hf_embeddings)
