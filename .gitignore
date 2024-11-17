@@ -9,3 +9,5 @@ data.gitlab_direction.json
 __pycache__/
 .vscode/
 data/
+/handbook
+/vector_stores

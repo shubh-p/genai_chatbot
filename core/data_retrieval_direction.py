@@ -34,7 +34,7 @@ if current_section["header"]:
 json_data = json.dumps(data, ensure_ascii=False, indent=2)
 
 # Save to file
-with open("data/webpage_data.json", "w", encoding="utf-8") as f:
+with open("data/direction_from_web.json", "w", encoding="utf-8") as f:
     f.write(json_data)
 
 print(json_data)
