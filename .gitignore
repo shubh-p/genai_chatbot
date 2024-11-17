@@ -8,6 +8,5 @@ data.gitlab_direction.json
 *.pyc
 __pycache__/
 .vscode/
-data/
 /handbook
 /vector_stores
