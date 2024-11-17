@@ -62,9 +62,10 @@ def build_or_load_vector_store(data, name, file_path):
         logger.info(f"{TAG}: Building new vector store for {name}")
         limited_data = data
         documents = [Document(page_content=f"{item['header']} - {item['content']}") for item in limited_data]
-        logger.info(f"{TAG}: Total documents indexed in {name}: {len(documents)}")
+        logger.info(f"{TAG}: Total documents to be indexed in {name}: {len(documents)}")
         vector_store = FAISS.from_documents(documents, hf_embeddings)
         vector_store.save_local(file_path)  # Save the vector store to disk
+        logger.info(f"{TAG}: indexing completed for {name}")
         return vector_store
 
 
