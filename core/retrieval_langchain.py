@@ -60,7 +60,7 @@ def build_or_load_vector_store(data, name, file_path):
         return FAISS.load_local(file_path, hf_embeddings, allow_dangerous_deserialization=True)
     else:
         logger.info(f"{TAG}: Building new vector store for {name}")
-        limited_data = data[:10]
+        limited_data = data
         documents = [Document(page_content=f"{item['header']} - {item['content']}") for item in limited_data]
         logger.info(f"{TAG}: Total documents indexed in {name}: {len(documents)}")
         vector_store = FAISS.from_documents(documents, hf_embeddings)
@@ -94,7 +94,7 @@ def retrieve_context_from_store(query, vector_store, source_name, top_k=TOP_K):
     results = retriever.get_relevant_documents(query)[:top_k]
     logger.info(f"{TAG}: Retrieved Documents for Query '{query}' from {source_name}:")
     for i, doc in enumerate(results, start=1):
-        logger.info(f"{TAG}: {i}. {doc.page_content[:100]}")
+        logger.info(f"{TAG}: {i}. {doc.page_content}")
     return results
 
 # Combined retrieval from both vector stores
