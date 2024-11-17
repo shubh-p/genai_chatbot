@@ -78,7 +78,7 @@ def convert_markdown_folder_to_json(input_folder, output_file):
     print(f"Data has been written to data/{output_file}")
 
 # Define paths
-input_folder = "/home/shubhlaxh/projects/handbook-main/content/handbook"  # Replace with your folder containing .md files
+input_folder = "./handbook"  # Replace with your folder containing .md files
 output_file = "handbook_from_md.json"  # Replace with the desired output file name
 
 # Convert Markdown files to JSON

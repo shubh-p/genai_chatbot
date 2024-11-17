@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import json
 import requests
 
+TAG='data_retrieval_direction'
 # Load HTML content (you can load this from a file or directly from the HTML string)
 url='https://about.gitlab.com/direction/'
 html_content = requests.get(url) # replace with your HTML content
